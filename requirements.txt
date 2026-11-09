@@ -1,0 +1,11 @@
+# Minimum versions. Google Colab already provides most of these.
+# torch/torchvision: install the build that matches your CUDA runtime (Colab default is fine).
+torch>=2.1
+torchvision>=0.16
+numpy>=1.24
+pandas>=2.0
+scikit-learn>=1.3
+Pillow>=10.0
+matplotlib>=3.7
+# Notebook 01 only: downloads the archive from Google Drive by file ID
+gdown>=5.0
