@@ -1,0 +1,88 @@
+{
+  "project": "DiagnoTech_Model2",
+  "task": "multi_label_chest_xray_classification",
+  "classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Infiltration",
+    "Mass",
+    "No Finding",
+    "Nodule",
+    "Pneumothorax"
+  ],
+  "annotation": {
+    "image_id_column": "Image Index",
+    "label_column": "Finding Labels",
+    "patient_id_column": "Patient ID",
+    "label_separator": "|",
+    "no_finding_token": "No Finding",
+    "keep_out_of_scope_only_as_negatives": false
+  },
+  "source": {
+    "drive_file_id": "14mTSe12PWrgRxMWFOme0johrmDgmBfaC",
+    "drive_file_name": "NIH_Model2_7_Diseases.zip",
+    "colab_drive_mount": "/content/drive/MyDrive",
+    "storage_folder_name": "DiagnoTech_Model2",
+    "colab_code_root": "/content/DiagnoTech_Model2",
+    "colab_raw_data_dir": "/content/data_raw"
+  },
+  "split": {
+    "train": 0.70,
+    "val": 0.15,
+    "test": 0.15,
+    "seed": 42,
+    "min_positives_per_class_eval_split": 30
+  },
+  "preprocessing": {
+    "image_size": 224,
+    "mean": [0.485, 0.456, 0.406],
+    "std": [0.229, 0.224, 0.225]
+  },
+  "augmentation": {
+    "rotation_degrees": 5,
+    "translate_fraction": 0.04,
+    "rrc_scale": [0.9, 1.0],
+    "rrc_ratio": [0.95, 1.05],
+    "brightness": 0.1,
+    "contrast": 0.1
+  },
+  "model": {
+    "architecture": "densenet121",
+    "pretrained": true,
+    "dropout": 0.3
+  },
+  "training": {
+    "batch_size": 16,
+    "allowed_batch_sizes": [8, 16, 32],
+    "num_workers": 2,
+    "seed": 42,
+    "weight_decay": 0.0001,
+    "amp": true,
+    "pos_weight_max": 50.0,
+    "phase_a": {
+      "max_epochs": 10,
+      "lr_head": 0.001,
+      "patience": 3
+    },
+    "phase_b": {
+      "lr_head": 0.0005,
+      "lr_backbone": 0.0001,
+      "stages": [
+        {"unfreeze_level": 1, "max_epochs": 15, "patience": 4},
+        {"unfreeze_level": 2, "max_epochs": 15, "patience": 4}
+      ]
+    },
+    "scheduler": {
+      "mode": "min",
+      "factor": 0.5,
+      "patience": 2,
+      "min_lr": 1e-7
+    }
+  },
+  "selection": {
+    "baseline_experiment": "E0",
+    "max_class_auroc_drop_vs_baseline": 0.02,
+    "ranking": ["eligible", "val_macro_auroc", "val_macro_f1_tuned", "val_loss"]
+  }
+}

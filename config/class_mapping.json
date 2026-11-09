@@ -1,0 +1,37 @@
+{
+  "task": "multi_label",
+  "num_classes": 8,
+  "output_activation": "sigmoid, one independent probability per class",
+  "loss": "BCEWithLogitsLoss",
+  "classes": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Infiltration",
+    "Mass",
+    "No Finding",
+    "Nodule",
+    "Pneumothorax"
+  ],
+  "class_to_index": {
+    "Atelectasis": 0,
+    "Cardiomegaly": 1,
+    "Effusion": 2,
+    "Infiltration": 3,
+    "Mass": 4,
+    "No Finding": 5,
+    "Nodule": 6,
+    "Pneumothorax": 7
+  },
+  "index_to_class": {
+    "0": "Atelectasis",
+    "1": "Cardiomegaly",
+    "2": "Effusion",
+    "3": "Infiltration",
+    "4": "Mass",
+    "5": "No Finding",
+    "6": "Nodule",
+    "7": "Pneumothorax"
+  },
+  "notes": "Index order is fixed. Changing it invalidates every checkpoint trained with this mapping."
+}
